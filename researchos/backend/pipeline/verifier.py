@@ -114,16 +114,12 @@ Identify all inconsistencies, scope issues, and regulatory concerns. Return JSON
             messages=[{"role": "user", "content": user_message}],
         )
         raw = response.content[0].text.strip()
-        print(f"VERIFIER RAW RESPONSE: {raw[:1000]}", flush=True)
         if raw.startswith("```"):
             raw = raw.split("```")[1]
             if raw.startswith("json"):
                 raw = raw[4:]
         return json.loads(raw.strip())
-    except json.JSONDecodeError as e:
-        print(f"JSON PARSE FAILED: {e}", flush=True)
-        print(f"FULL RAW: {raw}", flush=True)
+    except json.JSONDecodeError:
         return FALLBACK
-    except Exception as e:
-        print(f"VERIFIER EXCEPTION: {type(e).__name__}: {e}", flush=True)
+    except Exception:
         return FALLBACK

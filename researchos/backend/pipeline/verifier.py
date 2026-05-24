@@ -124,5 +124,6 @@ Identify all inconsistencies, scope issues, and regulatory concerns. Return JSON
         print(f"JSON PARSE FAILED: {e}", flush=True)
         print(f"FULL RAW: {raw}", flush=True)
         return FALLBACK
-    except Exception:
+    except Exception as e:
+        print(f"VERIFIER EXCEPTION: {type(e).__name__}: {e}", flush=True)
         return FALLBACK

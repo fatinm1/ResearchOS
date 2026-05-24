@@ -115,5 +115,6 @@ Draft all five sections and return JSON only."""
         print(f"JSON PARSE FAILED: {e}", flush=True)
         print(f"FULL RAW: {raw}", flush=True)
         return FALLBACK
-    except Exception:
+    except Exception as e:
+        print(f"DRAFTER EXCEPTION: {type(e).__name__}: {e}", flush=True)
         return FALLBACK

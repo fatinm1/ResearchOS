@@ -3,7 +3,7 @@ import os
 
 import anthropic
 
-MODEL = "claude-sonnet-4-5-20251001"
+MODEL = "claude-sonnet-4-6"
 MAX_TOKENS = 3000
 
 SYSTEM_PROMPT = """You are an expert IRB amendment drafter with deep knowledge of the Common Rule

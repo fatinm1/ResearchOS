@@ -13,7 +13,7 @@ https://github.com/fatinm1/ResearchOS.git
 
 ## Tech stack
 - Backend: FastAPI + Python 3.12
-- AI: Anthropic Claude API (claude-sonnet-4-5-20251001)
+- AI: Anthropic Claude API (claude-sonnet-4-6)
 - PDF: PyMuPDF (fitz)
 - Documents: python-docx
 - Frontend: Vanilla HTML/CSS/JS — no frameworks, no build step
@@ -74,7 +74,7 @@ researchos/
 - Strip markdown fences before JSON parsing in all pipeline stages
 - Max context sent to Claude: 12000 chars for extractor, 4000 for classifier,
   5000 for drafter, 3000 for verifier (to fit safely in context windows)
-- Claude model: claude-sonnet-4-5-20251001 (never change without updating this file)
+- Claude model: claude-sonnet-4-6 (never change without updating this file)
 
 ## Code conventions — Frontend
 - Vanilla HTML/CSS/JS only — no React, Vue, Tailwind, Bootstrap

@@ -3,7 +3,7 @@ import os
 
 import anthropic
 
-MODEL = "claude-sonnet-4-5-20251001"
+MODEL = "claude-sonnet-4-6"
 MAX_TOKENS = 1500
 
 SYSTEM_PROMPT = """You are a rigorous IRB reviewer conducting a consistency check on a proposed

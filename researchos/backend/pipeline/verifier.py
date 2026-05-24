@@ -4,7 +4,7 @@ import os
 import anthropic
 
 MODEL = "claude-sonnet-4-6"
-MAX_TOKENS = 1500
+MAX_TOKENS = 4000
 
 SYSTEM_PROMPT = """You are a rigorous IRB reviewer conducting a consistency check on a proposed
 protocol amendment. Your job is adversarial — find inconsistencies, contradictions, scope issues,

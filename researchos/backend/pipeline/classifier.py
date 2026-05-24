@@ -34,11 +34,13 @@ Risk level: Minimal risk only. Turnaround: 1-2 weeks.
 
 FULL_BOARD:
 - Research involving more than minimal risk to participants
-- Research involving vulnerable populations (children, prisoners, pregnant women, cognitively impaired)
+- Research involving vulnerable populations (children, prisoners, pregnant women,
+  cognitively impaired)
 - Research involving major changes to study aims or scientific objectives
 - Addition of invasive procedures beyond venipuncture
 - Changes to recruitment that could introduce coercion or undue influence
-- Significant changes to data handling for sensitive information (mental health, genetics, HIV status)
+- Significant changes to data handling for sensitive information
+  (mental health, genetics, HIV status)
 - Turnaround: 4-6 weeks (next scheduled board meeting).
 
 Respond ONLY with valid JSON matching this exact schema — no markdown fences, no extra text:

@@ -169,9 +169,7 @@ def generate_word_doc(
 
     if classification.get("scope_warning"):
         sw_p = doc.add_paragraph()
-        sw_r = sw_p.add_run(
-            f"⚠ SCOPE WARNING: {classification.get('scope_warning_detail', '')}"
-        )
+        sw_r = sw_p.add_run(f"⚠ SCOPE WARNING: {classification.get('scope_warning_detail', '')}")
         sw_r.font.color.rgb = RGBColor(121, 31, 31)
         sw_r.bold = True
         sw_r.font.size = Pt(11)
@@ -179,8 +177,11 @@ def generate_word_doc(
     if classification.get("re_consent_required"):
         rc_p = doc.add_paragraph()
         rc_r = rc_p.add_run(
-            f"ℹ RE-CONSENT NOTICE: "
-            f"{classification.get('re_consent_detail', 'Re-consent of existing participants may be required.')}"
+            "ℹ RE-CONSENT NOTICE: "
+            + classification.get(
+                "re_consent_detail",
+                "Re-consent of existing participants may be required.",
+            )
         )
         rc_r.font.color.rgb = RGBColor(29, 78, 158)
         rc_r.bold = True
@@ -255,9 +256,7 @@ def generate_word_doc(
         severity = flag.get("severity", "INFO")
         icon = SEVERITY_ICONS.get(severity, "ℹ")
         fp = doc.add_paragraph()
-        fr = fp.add_run(
-            f"{icon} [{severity}] {flag.get('section', '')}: {flag.get('issue', '')}"
-        )
+        fr = fp.add_run(f"{icon} [{severity}] {flag.get('section', '')}: {flag.get('issue', '')}")
         fr.bold = True
         fr.font.size = Pt(10)
 
@@ -316,7 +315,8 @@ def generate_word_doc(
         ("Consent Document Changes", "Copy Section E verbatim"),
         (
             "Attach revised documents",
-            "Upload any revised consent forms, data collection instruments, or recruitment materials",
+            "Upload any revised consent forms, data collection instruments, or"
+            " recruitment materials",
         ),
         ("Review type selection", review_label),
     ]

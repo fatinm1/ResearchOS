@@ -25,24 +25,28 @@ CRITICAL RULES — follow without exception:
 
 Respond ONLY with valid JSON matching this exact schema — no markdown fences, no extra text:
 {
-  "section_a_summary": "<precise bullet-point summary of ALL changes, one per line starting with •>",
+  "section_a_summary": "<precise bullet-point summary of ALL changes, one per line starting •>",
   "section_b_justification": "<scientific/operational rationale — only what researcher provided>",
   "section_c_risk_impact": "<risk/benefit assessment — cite specific procedures described>",
   "section_d_reconsent": "<re-consent assessment and plan, or statement re-consent not required>",
-  "section_e_consent_changes": "<consent form update description, or 'No changes to consent documents are required.'>",
+  "section_e_consent_changes": "<consent form update description, or 'No changes required.'>",
   "key_changes_list": ["<3-7 short bullets for cover page, each under 100 chars>"]
 }"""
 
 FALLBACK = {
     "section_a_summary": (
-        "• [RESEARCHER TO CONFIRM: Amendment drafting failed. Please describe all changes manually.]\n"
-        "• [RESEARCHER TO CONFIRM: List all modified procedures, populations, or data collection methods.]"
+        "• [RESEARCHER TO CONFIRM: Amendment drafting failed. Please describe all changes"
+        " manually.]\n"
+        "• [RESEARCHER TO CONFIRM: List all modified procedures, populations, or data collection"
+        " methods.]"
     ),
     "section_b_justification": (
-        "[RESEARCHER TO CONFIRM: Please provide the scientific or operational justification for this amendment.]"
+        "[RESEARCHER TO CONFIRM: Please provide the scientific or operational justification"
+        " for this amendment.]"
     ),
     "section_c_risk_impact": (
-        "[RESEARCHER TO CONFIRM: Please assess the impact on participant risk and benefit resulting from these changes.]"
+        "[RESEARCHER TO CONFIRM: Please assess the impact on participant risk and benefit"
+        " resulting from these changes.]"
     ),
     "section_d_reconsent": (
         "[RESEARCHER TO CONFIRM: Determine whether existing participants must be re-consented and "

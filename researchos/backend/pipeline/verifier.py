@@ -13,7 +13,8 @@ or regulatory concerns that could cause the amendment to be returned or delayed.
 Check for:
 - Contradictions between the draft sections and the approved protocol
 - Claims or procedures described in the draft that exceed the scope of the researcher's description
-- Missing information that IRB reviewers will flag (e.g., undescribed risks, missing re-consent plan)
+- Missing information that IRB reviewers will flag (e.g., undescribed risks, missing
+  re-consent plan)
 - Regulatory concerns under the Common Rule (45 CFR 46)
 - Internal inconsistencies between draft sections (e.g., Section A says X but Section C ignores X)
 - Scope creep — amendment claims more or less than the change description supports
@@ -45,9 +46,12 @@ FALLBACK = {
         {
             "severity": "WARNING",
             "section": "All Sections",
-            "issue": "Automated consistency check could not be completed due to a processing error.",
+            "issue": (
+                "Automated consistency check could not be completed due to a processing error."
+            ),
             "recommendation": (
-                "Manually review all sections for consistency with the approved protocol before submission."
+                "Manually review all sections for consistency with the approved protocol"
+                " before submission."
             ),
         }
     ],

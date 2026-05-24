@@ -1,6 +1,5 @@
 import fitz  # PyMuPDF
 
-
 MAX_CHARS = 12000
 
 

@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop, 'feature/**', 'fix/**' ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Cache pip dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('researchos/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r researchos/requirements.txt
+          pip install ruff pytest httpx
+
+      - name: Lint with ruff
+        run: |
+          ruff check researchos/backend/ --select E,W,F,I
+          ruff format researchos/backend/ --check
+
+      - name: Check for secrets accidentally committed
+        run: |
+          if grep -r "sk-ant-" . --include="*.py" --include="*.env" --include="*.txt" \
+            --exclude-dir=".git" --exclude-dir="__pycache__"; then
+            echo "ERROR: Possible API key found in committed files"
+            exit 1
+          fi
+
+      - name: Run tests
+        env:
+          ANTHROPIC_API_KEY: "test-key-ci-only"
+        run: |
+          pytest tests/ -v --tb=short
+        if: hashFiles('tests/') != ''
+
+      - name: Verify server starts
+        env:
+          ANTHROPIC_API_KEY: "test-key-ci-only"
+        run: |
+          cd researchos
+          uvicorn backend.main:app --port 8001 &
+          SERVER_PID=$!
+          sleep 3
+          curl -f http://localhost:8001/api/health || exit 1
+          curl -f http://localhost:8001/ || exit 1
+          curl -f http://localhost:8001/app || exit 1
+          kill $SERVER_PID

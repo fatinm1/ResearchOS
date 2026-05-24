@@ -3,7 +3,7 @@ import os
 
 import anthropic
 
-MODEL = "claude-sonnet-4-20250514"
+MODEL = "claude-sonnet-4-6"
 MAX_TOKENS = 3000
 
 SYSTEM_PROMPT = """You are an expert IRB amendment drafter with deep knowledge of the Common Rule
@@ -105,12 +105,16 @@ Draft all five sections and return JSON only."""
             messages=[{"role": "user", "content": user_message}],
         )
         raw = response.content[0].text.strip()
+        print(f"DRAFTER RAW RESPONSE: {raw[:1000]}", flush=True)
         if raw.startswith("```"):
             raw = raw.split("```")[1]
             if raw.startswith("json"):
                 raw = raw[4:]
         return json.loads(raw.strip())
-    except json.JSONDecodeError:
+    except json.JSONDecodeError as e:
+        print(f"JSON PARSE FAILED: {e}", flush=True)
+        print(f"FULL RAW: {raw}", flush=True)
         return FALLBACK
-    except Exception:
+    except Exception as e:
+        print(f"DRAFTER EXCEPTION: {type(e).__name__}: {e}", flush=True)
         return FALLBACK

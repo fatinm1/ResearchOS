@@ -105,12 +105,15 @@ Draft all five sections and return JSON only."""
             messages=[{"role": "user", "content": user_message}],
         )
         raw = response.content[0].text.strip()
+        print(f"DRAFTER RAW RESPONSE: {raw[:1000]}", flush=True)
         if raw.startswith("```"):
             raw = raw.split("```")[1]
             if raw.startswith("json"):
                 raw = raw[4:]
         return json.loads(raw.strip())
-    except json.JSONDecodeError:
+    except json.JSONDecodeError as e:
+        print(f"JSON PARSE FAILED: {e}", flush=True)
+        print(f"FULL RAW: {raw}", flush=True)
         return FALLBACK
     except Exception:
         return FALLBACK

@@ -4,7 +4,7 @@ import os
 import anthropic
 
 MODEL = "claude-sonnet-4-6"
-MAX_TOKENS = 3000
+MAX_TOKENS = 6000
 
 SYSTEM_PROMPT = """You are an expert IRB amendment drafter with deep knowledge of the Common Rule
 (45 CFR 46) and institutional review board requirements. You are assisting a PI or study

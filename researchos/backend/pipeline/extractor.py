@@ -11,10 +11,8 @@ def extract_pdf_text(pdf_bytes: bytes) -> str:
     result at MAX_CHARS to stay within Claude context window limits. Returns a
     warning string if the PDF appears to be scanned/image-based (no extractable text).
     """
-    doc = fitz.open(stream=pdf_bytes, filetype="pdf")
-    full_text = ""
-    for page in doc:
-        full_text += page.get_text()
+    with fitz.open(stream=pdf_bytes, filetype="pdf") as doc:
+        full_text = "".join(page.get_text() for page in doc)
 
     if len(full_text.strip()) < 100:
         return (

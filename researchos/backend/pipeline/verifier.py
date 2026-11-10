@@ -1,7 +1,10 @@
 import json
 import os
+from copy import deepcopy
+from typing import Literal
 
 import anthropic
+from pydantic import BaseModel, Field
 
 MODEL = "claude-sonnet-4-6"
 MAX_TOKENS = 4000
@@ -63,6 +66,25 @@ FALLBACK = {
 }
 
 
+class VerificationFlag(BaseModel):
+    """Require traceable findings rather than arbitrary model JSON."""
+
+    severity: Literal["ERROR", "WARNING", "INFO"]
+    section: str
+    issue: str
+    recommendation: str
+
+
+class VerificationReport(BaseModel):
+    """Constrain model output; a model score is not an approval decision."""
+
+    overall_status: Literal["CLEAN", "WARNINGS", "ERRORS"]
+    flags: list[VerificationFlag]
+    consistency_score: int = Field(ge=1, le=10)
+    ready_to_submit: bool
+    reviewer_notes: str
+
+
 def verify_consistency(
     draft: dict,
     protocol_text: str,
@@ -77,7 +99,6 @@ def verify_consistency(
     Returns a structured verification report with severity-tagged flags and a 1-10 score.
     Falls back to a safe default dict if the API call or JSON parsing fails.
     """
-    client = anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
 
     section_a = draft.get("section_a_summary", "")
     section_b = draft.get("section_b_justification", "")
@@ -107,6 +128,7 @@ DRAFT SECTION D — Re-consent Assessment:
 Identify all inconsistencies, scope issues, and regulatory concerns. Return JSON only."""
 
     try:
+        client = anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
         response = client.messages.create(
             model=MODEL,
             max_tokens=MAX_TOKENS,
@@ -114,16 +136,19 @@ Identify all inconsistencies, scope issues, and regulatory concerns. Return JSON
             messages=[{"role": "user", "content": user_message}],
         )
         raw = response.content[0].text.strip()
-        print(f"VERIFIER RAW RESPONSE: {raw[:1000]}", flush=True)
+
         if raw.startswith("```"):
             raw = raw.split("```")[1]
             if raw.startswith("json"):
                 raw = raw[4:]
-        return json.loads(raw.strip())
+        report = VerificationReport.model_validate(json.loads(raw.strip())).model_dump()
+        # All outputs remain drafts for human review, even when the model says CLEAN.
+        report["ready_to_submit"] = False
+        return report
     except json.JSONDecodeError as e:
         print(f"JSON PARSE FAILED: {e}", flush=True)
-        print(f"FULL RAW: {raw}", flush=True)
-        return FALLBACK
+
+        return deepcopy(FALLBACK)
     except Exception as e:
         print(f"VERIFIER EXCEPTION: {type(e).__name__}: {e}", flush=True)
-        return FALLBACK
+        return deepcopy(FALLBACK)
